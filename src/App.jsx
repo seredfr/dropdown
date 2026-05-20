@@ -15,7 +15,6 @@ function App() {
       <Dropdown 
         items={menuItems}
         defaultItem="Profile Information"
-        buttonText="Account Settings"
       />
     </div>
   );

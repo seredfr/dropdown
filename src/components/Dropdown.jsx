@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import DropdownList from './DropdownList';
 
-function Dropdown({ items, defaultItem, buttonText }) {
+function Dropdown({ items, defaultItem }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(defaultItem || items[0]);
+  const wrapperRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -14,19 +15,32 @@ function Dropdown({ items, defaultItem, buttonText }) {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const handleClickOutside = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
   return (
-    <div className={`dropdown-wrapper ${isOpen ? 'open' : ''}`}>
+    <div 
+      className={`dropdown-wrapper ${isOpen ? 'open' : ''}`} 
+      ref={wrapperRef}
+    >
       <button className="btn" onClick={toggleDropdown}>
-        <span>{buttonText || selectedItem}</span>
-        <i className="material-icons">public</i>
+        <span>{selectedItem}</span>
       </button>
-      {isOpen && (
-        <DropdownList
-          items={items}
-          selectedItem={selectedItem}
-          onSelectItem={handleSelectItem}
-        />
-      )}
+      <DropdownList
+        items={items}
+        selectedItem={selectedItem}
+        onSelectItem={handleSelectItem}
+      />
     </div>
   );
 }

@@ -10,7 +10,7 @@ function DropdownItem({ item, isActive, onSelect }) {
       style={itemStyle}
       onClick={() => onSelect(item)}
     >
-      <a href="#">{item}</a>
+      <a href="#" onClick={(e) => e.preventDefault()}>{item}</a>
     </li>
   );
 }

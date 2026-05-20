@@ -3,9 +3,9 @@ import DropdownItem from './DropdownItem';
 function DropdownList({ items, selectedItem, onSelectItem }) {
   return (
     <ul className="dropdown">
-      {items.map((item, index) => (
+      {items.map((item) => (
         <DropdownItem
-          key={index}
+          key={item}
           item={item}
           isActive={item === selectedItem}
           onSelect={onSelectItem}
